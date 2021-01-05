@@ -2,23 +2,30 @@ package com.katarinagresova.isbntools;
 
 public class ValidateISBN
 {
+
+	public static final int LONG_ISBN_LENGTH = 13;
+	public static final int SHORT_ISBN_LENGTH = 10;
+	public static final int SHORT_ISBN_MULTIPLIER = 11;
+	public static final int LONG_ISBN_MULTIPLIER = 10;
+	public static final int SHORT_ISBN_VALUE_OF_X = 10;
+
 	public boolean checkISBN(String isbn)
 	{
 
 		int length = isbn.length();
 
-		if (length == 10) {
-			return checkISBN10(isbn);
+		if (length == SHORT_ISBN_LENGTH) {
+			return checkShortISBN(isbn);
 		}
-		else if (length == 13) {
-			return checkISBN13(isbn);
+		else if (length == LONG_ISBN_LENGTH) {
+			return checkLongISBN(isbn);
 		}
 		else {
 			throw new NumberFormatException("ISBN number must have 10 or 13 digits.");
 		}
 	}
 
-	private boolean checkISBN10(String isbn) {
+	private boolean checkShortISBN(String isbn) {
 
 		if (!areAllDigits(getPrefixExceptLast(isbn)) || !isDigitOrX(getLastCharacter(isbn))) {
 			throw new NumberFormatException("ISBN number can only contains numeric digits, character 'x' is allowed on last position.");
@@ -26,22 +33,22 @@ public class ValidateISBN
 
 		int total = 0;
 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < SHORT_ISBN_LENGTH; i++) {
 			int digit = convertCharOrXToDigit(isbn.charAt(i));
-			total += digit * (10 - i);
+			total += digit * (SHORT_ISBN_LENGTH - i);
 		}
 
-		return total % 11 == 0;
+		return total % SHORT_ISBN_MULTIPLIER == 0;
 	}
 
-	private boolean checkISBN13(String isbn) {
+	private boolean checkLongISBN(String isbn) {
 		if (!areAllDigits(isbn)) {
 			throw new NumberFormatException("ISBN number can only contains numeric digits");
 		}
 
 		int total = 0;
 
-		for (int i = 0; i < 13; i++) {
+		for (int i = 0; i < LONG_ISBN_LENGTH; i++) {
 			int digit = convertCharOrXToDigit(isbn.charAt(i));
 			if (i % 2 == 0) {
 				total += digit * 1;
@@ -50,7 +57,7 @@ public class ValidateISBN
 			}
 		}
 
-		return total % 10 == 0;
+		return total % LONG_ISBN_MULTIPLIER == 0;
 	}
 
 	private char getLastCharacter(String word) {
@@ -71,7 +78,7 @@ public class ValidateISBN
 
 	private int convertCharOrXToDigit(char character) {
 		if (Character.toLowerCase(character) == 'x') {
-			return 10;
+			return SHORT_ISBN_VALUE_OF_X;
 		} else {
 			return Character.getNumericValue(character);
 		}
