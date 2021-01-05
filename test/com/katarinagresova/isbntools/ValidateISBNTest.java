@@ -4,8 +4,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class ValidateISBNTest {
 
@@ -28,4 +27,11 @@ public class ValidateISBNTest {
 		assertFalse(result);
 	}
 
+	// "expected = NumberFormatException.class" is telling the test that valid outcome is when NumberFormatException
+	// exception is thrown. Otherwise test will end as failed.
+	@Test(expected = NumberFormatException.class)
+	public void nineDigitISBNsAreNotAllowed() {
+		ValidateISBN validator = new ValidateISBN();
+		validator.checkISBN("123456789");
+	}
 }
