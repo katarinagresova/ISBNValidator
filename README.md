@@ -2,6 +2,10 @@
 
 ISBN validator is toy project for learning how to write unit tests in Java using JUnit and following logic of Test Driven Development (TDD).
 
+## Unit testing tips
+
+1) Use long and descriptive names for your tests. If any point in the future one of your tests fails, it will help you know straight away what it is that is not working.
+
 ## Rules of TDD
 
 ### 1) Examples and outcomes
