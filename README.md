@@ -12,11 +12,21 @@ Test will generally work on basis of "I expect this particular example to result
 
 When writing test, thing about examples and outcomes, not code or how it should work in detail.
 
-### 3) Don't pre-judge design... let your tests drive it
+### 2) Don't pre-judge design... let your tests drive it
 
 Decision around things like data types, class structures, even whole architecture of code in general will change over time as you come up with tests that determine what the requirements really are.
 
+### 3) Write the minimum code required to get your tests to pass
 
+We are not interested in building the correct and full functionality at this point
+
+### 4) Each test should validate one single piece of logic
+
+You expect to have only one `assert` in a test method. If there are multiple `asserts` in test method, it needs to fit one of these following examples:
+
+1) you need to test more than one value to check that something work correctly (for example, if method is setting multiple class variables, we you can use multiple `asserts` to check if they are set properly)
+
+2) you want to test multiple values that are just different examples of the same thing (for example, multiple valid ISBN numbers)
 
 ### X) Red -> Green -> Refactor
 
