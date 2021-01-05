@@ -1,18 +1,31 @@
 package com.katarinagresova.isbntools;
 
 import org.junit.Test;
+import java.util.Arrays;
+import java.util.List;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class ValidateISBNTest {
 
-	private final String VALID_ISBN = "0140449116";
+	private final List<String> VALID_ISBN = Arrays.asList("0140449116", "0140177396");
+	private final String INVALID_ISBN = "0140449117";
 
 	@Test
 	public void checkValidISBN() {
 		ValidateISBN validator = new ValidateISBN();
-		boolean result = validator.checkISBN(VALID_ISBN);
-		assertTrue(result);
+		for (String validISBN: VALID_ISBN) {
+			boolean result = validator.checkISBN(validISBN);
+			assertTrue(String.format("Check failed for ISBN %s", validISBN), result);
+		}
+	}
+
+	@Test
+	public void checkInvalidISBN() {
+		ValidateISBN validator = new ValidateISBN();
+		boolean result = validator.checkISBN(INVALID_ISBN);
+		assertFalse(result);
 	}
 
 }
