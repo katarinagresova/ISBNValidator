@@ -5,7 +5,11 @@ public class ValidateISBN
 	public boolean checkISBN(String isbn) {
 
 		if (isbn.length() != 10) {
-			throw new NumberFormatException("ISBN number must have 10 digits");
+			throw new NumberFormatException("ISBN number must have 10 digits.");
+		}
+
+		if (!isbn.chars().allMatch(Character::isDigit)) {
+			throw new NumberFormatException("ISBN number can only contains numeric digits.");
 		}
 
 		int total = 0;
