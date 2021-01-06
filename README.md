@@ -6,6 +6,10 @@ ISBN validator is toy project for learning how to write unit tests in Java using
 
 1) Use long and descriptive names for your tests. If any point in the future one of your tests fails, it will help you know straight away what it is that is not working.
 
+2) Test are not fot testing methods but for testing business logic. There should not be a 1-1 relationship between tests and methods.
+
+3) Tests must be repeatable and consistent. Given the same data, tests must produce the same results every time.
+
 ## Rules of TDD
 
 ### 1) Examples and outcomes
