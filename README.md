@@ -34,8 +34,31 @@ You expect to have only one `assert` in a test method. If there are multiple `as
 
 1) you need to test more than one value to check that something work correctly (for example, if method is setting multiple class variables, we you can use multiple `asserts` to check if they are set properly)
 
-2) you want to test multiple values that are just different examples of the same thing (for example, multiple valid ISBN numbers)
+2) you want to test multiple values that are just different examples of the same thing (for example, multiple valid ISBNs)
 
 ### X) Red -> Green -> Refactor
 
 Always start with failing tests.
+
+## Testing code with dependencies
+
+Let's say we have some business logic we are trying to test. Our implementation of this business logic has a dependency on some external service. When running our test, we don't want to use that external service, because we don't want to test its behaviour. We want to create a mockup of what that external service should be and use this version instead.
+
+We want to create a *test stub*. Stub is a replacement for an object of class that our business logic has dependency on. We can inject this replacement into that class from our test to override use of external dependency.
+
+In case of ISBN validator project, we are testing `StockManager`. This `StockManager` class is using method `lookup()` from service, that implements `ExternalISBNDataService` interface. So in our test we implement this interface `ExternalISBNDataService` to have a behavior necessary for current test.
+
+    ExternalISBNDataService testService = new ExternalISBNDataService() {
+        @Override
+        public Book lookup(String isbn) {
+            return new Book(isbn, "Of Mice and Man", "J. Steinbeck");
+        }
+    };
+    
+    StockManager stockManager = new StockManager();
+    stockManager.setService(testService);
+    
+    String isbn = "0140177396";
+    String locatorCode = stockManager.getLocatorCode(isbn);
+
+However, this solution can be only used if our external dependency implements some interface. If this interface is too big then overriding it in a test would be too much work, and we need to use different solution.
