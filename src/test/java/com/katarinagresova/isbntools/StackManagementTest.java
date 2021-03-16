@@ -49,12 +49,28 @@ public class StackManagementTest {
 		String isbn = "0140177396";
 		String locatorCode = stockManager.getLocatorCode(isbn);
 
-		verify(databaseService, times(1)).lookup(isbn);
+		verify(databaseService, times(1)).lookup("0140177396");
+		verify(webService, times(0)).lookup(anyString());
 	}
 
 	@Test
 	public void webServiceIsUsedIfDataIsNotPresentInDatabase() {
-		fail();
+		ExternalISBNDataService databaseService = mock(ExternalISBNDataService.class);
+		ExternalISBNDataService webService = mock(ExternalISBNDataService.class);
+
+		// implementing only the part we need
+		when(databaseService.lookup("0140177396")).thenReturn(null);
+		when(webService.lookup("0140177396")).thenReturn(new Book("0140177396", "Of Mice and Man", "J. Steinbeck"));
+
+		StockManager stockManager = new StockManager();
+		stockManager.setWebService(webService);
+		stockManager.setDatabaseService(databaseService);
+
+		String isbn = "0140177396";
+		String locatorCode = stockManager.getLocatorCode(isbn);
+
+		verify(databaseService, times(1)).lookup("0140177396");
+		verify(webService, times(1)).lookup("0140177396");
 	}
 
 }
