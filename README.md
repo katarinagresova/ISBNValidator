@@ -44,6 +44,8 @@ Always start with failing tests.
 
 Let's say we have some business logic we are trying to test. Our implementation of this business logic has a dependency on some external webService. When running our test, we don't want to use that external webService, because we don't want to test its behaviour. We want to create a mockup of what that external webService should be and use this version instead.
 
+### Stub
+
 We want to create a *test stub*. Stub is a replacement for an object of class that our business logic has dependency on. We can inject this replacement into that class from our test to override use of external dependency.
 
 In case of ISBN validator project, we are testing `StockManager`. This `StockManager` class is using method `lookup()` from webService, that implements `ExternalISBNDataService` interface. So in our test we implement this interface `ExternalISBNDataService` to have a behavior necessary for current test.
@@ -64,8 +66,6 @@ String locatorCode = stockManager.getLocatorCode(isbn);
 ```
 
 However, this solution can be only used if our external dependency implements some interface. If this interface is too big then overriding it in a test would be too much work, and we need to use different solution.
-
-## Testing behaviour
 
 ### Mock
 
@@ -106,3 +106,18 @@ If we want to set our own class, we can use `any(MyClass.class)`.
 Mockito also provide more flexible way of verifying number of execution of method. 
 Next to `times()` method, there are also `atLeast()` and `atMost()` methods.
 There is also alternative syntax to `times(0)` which is `never()`.
+
+### Fake
+
+If we want really light-weight implementation of some class that do nothing, we might want to use *fake*.
+
+### Comparison
+
+| Type | What is it for? | How to do it in Mockito?   |
+|------|-----------------|----------------------------|
+| Fake | No tests        | mock()                     |
+| Stub | Test data       | mock()                     |
+|      |                 | when().thenReturn()        |
+| Mock | Test behavior   | mock()                     |
+|      |                 | verify().myMethod()        |
+
