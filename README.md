@@ -121,3 +121,14 @@ If we want really light-weight implementation of some class that do nothing, we 
 | Mock | Test behavior   | mock()                     |
 |      |                 | verify().myMethod()        |
 
+### Spy
+
+Spying on an object means that we don't replace an object (we still use the underlying object) but we stub one or more if its methods. By using spying, we can replace a method of an object and leave the rest of the object intacted. 
+
+Spying is done with `@Spy` annotation on class level object nad then by calling `spy()` method on instance of that object. After this setup, we can override some methods using following syntax:
+
+```java
+doReturn(return_value).when(spy_object).method_call(params);
+```
+
+This concept might feel similar to stub, but difference is that stub is creating an empty instance of object and providing just necesary implementation, while spy is using full woorking object and allowing us to change just small part of its logic.
